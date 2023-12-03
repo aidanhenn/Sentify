@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Summarizer</title>
+  </head>
+  <body>
+    <div style="max-width: 600px; margin: 50px auto">
+      <h1>Text Summarizer</h1>
+      <form action="/summarize" method="post">
+        <textarea
+          name="text"
+          rows="10"
+          cols="50"
+          placeholder="Enter text to summarize"
+        ></textarea>
+        <br />
+        <label for="num_sentences">Number of Sentences:</label>
+        <input type="number" name="num_sentences" value="2" min="1" max="10" />
+        <br />
+        <br />
+        <input type="submit" value="Summarize" />
+        <button
+          id="exampleButton"
+          onclick="copyExampleText()"
+          data-example="As the chef prepared a delicious meal in the bustling kitchen, the latest news played softly on the radio, covering everything from global events to local stories. Outside, a group of friends gathered in the garden, discussing their favorite books and sharing laughter. Meanwhile, in a cozy corner, a student engrossed in a fascinating article about space exploration was sipping a cup of coffee. The diverse conversations and interests in the air created a vibrant atmosphere where the worlds of culinary arts, current affairs, literature, and science intertwined seamlessly."
+        >
+          Copy Example Text
+        </button>
+      </form>
+
+      {% if input_text %}
+      <h3>Original Text:</h3>
+      <p>{{ input_text }}</p>
+      {% endif %} {% if summary %}
+      <h3>Summary:</h3>
+      <p>{{ summary }}</p>
+      {% endif %}
+    </div>
+    <div>
+      <script>
+        function copyExampleText() {
+          // Get the example text from the data-example attribute
+          var exampleText = document
+            .getElementById("exampleButton")
+            .getAttribute("data-example");
+
+          // Create a temporary textarea element to hold the text
+          var tempTextArea = document.createElement("textarea");
+          tempTextArea.value = exampleText;
+
+          // Append the textarea to the body
+          document.body.appendChild(tempTextArea);
+
+          // Select the text 
+          tempTextArea.select();
+          tempTextArea.setSelectionRange(0, 99999);
+
+          // Copy the text
+          document.execCommand("copy");
+
+          document.body.removeChild(tempTextArea);
+
+          // Create popup
+          alert("Example text copied to clipboard!");
+        }
+      </script>
+    </div>
+  </body>
+</html>
