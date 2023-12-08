@@ -3,11 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text Summarizer</title>
+    <title>Sentify</title>
+
+    <style>
+      body {
+        background-color: #033a26;
+        font-family: "Arial", sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background-color: #cecaca;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h1 {
+        color: #00796b;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #00796b;
+      }
+
+      input[type="number"] {
+        width: 50px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"],
+      #exampleButton {
+        background-color: #00796b;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      input[type="submit"]:hover,
+      #exampleButton:hover {
+        background-color: #004d40;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      h3 {
+        color: #00796b;
+        margin-top: 20px;
+      }
+
+      p {
+        line-height: 1.6;
+      }
+    </style>
   </head>
+
   <body>
-    <div style="max-width: 600px; margin: 50px auto">
-      <h1>Text Summarizer</h1>
+    <div class="container">
+      <h1
+        style="
+          font-size: 40px;
+          font-family: 'Arial Black', sans-serif;
+          color: #004d40;
+          text-decoration: underline;
+        "
+      >
+        SENTIFY
+      </h1>
+
       <form action="/summarize" method="post">
         <textarea
           name="text"
@@ -20,14 +113,16 @@
         <input type="number" name="num_sentences" value="2" min="1" max="10" />
         <br />
         <br />
-        <input type="submit" value="Summarize" />
-        <button
-          id="exampleButton"
-          onclick="copyExampleText()"
-          data-example="As the chef prepared a delicious meal in the bustling kitchen, the latest news played softly on the radio, covering everything from global events to local stories. Outside, a group of friends gathered in the garden, discussing their favorite books and sharing laughter. Meanwhile, in a cozy corner, a student engrossed in a fascinating article about space exploration was sipping a cup of coffee. The diverse conversations and interests in the air created a vibrant atmosphere where the worlds of culinary arts, current affairs, literature, and science intertwined seamlessly."
-        >
-          Copy Example Text
-        </button>
+        <div class="button-container">
+          <input type="submit" value="Summarize" />
+          <button
+            id="exampleButton"
+            onclick="copyExampleText()"
+            data-example="As the city awoke to the gentle hues of dawn, the bustling streets came to life with the rhythmic melody of footsteps and distant traffic. The aroma of freshly brewed coffee wafted through the air, emanating from quaint cafes that lined the sidewalks. Amidst the urban symphony, a group of artists set up their easels in the park, capturing the vibrant cityscape on canvas. Meanwhile, a young couple strolled hand in hand, immersed in animated conversation, oblivious to the surrounding activity. As the day unfolded, the city revealed its multifaceted character, blending creativity, urban energy, and the quiet intimacy of shared moments."
+          >
+            Copy Example Text
+          </button>
+        </div>
       </form>
 
       {% if input_text %}
@@ -36,36 +131,32 @@
       {% endif %} {% if summary %}
       <h3>Summary:</h3>
       <p>{{ summary }}</p>
+      {% endif %} {% if sentiment %}
+      <h3>Sentiment:</h3>
+      <p>{{ sentiment }}</p>
       {% endif %}
     </div>
-    <div>
-      <script>
-        function copyExampleText() {
-          // Get the example text from the data-example attribute
-          var exampleText = document
-            .getElementById("exampleButton")
-            .getAttribute("data-example");
 
-          // Create a temporary textarea element to hold the text
-          var tempTextArea = document.createElement("textarea");
-          tempTextArea.value = exampleText;
+    <script>
+      function copyExampleText() {
+        // Get the example text from data-example 
+        var exampleText = document
+          .getElementById("exampleButton")
+          .getAttribute("data-example");
 
-          // Append the textarea to the body
-          document.body.appendChild(tempTextArea);
+        // Create a temporary textarea element, append, select and copy the example text
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = exampleText;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        tempTextArea.setSelectionRange(0, 99999);
+        document.execCommand("copy");
 
-          // Select the text 
-          tempTextArea.select();
-          tempTextArea.setSelectionRange(0, 99999);
+        document.body.removeChild(tempTextArea);
 
-          // Copy the text
-          document.execCommand("copy");
-
-          document.body.removeChild(tempTextArea);
-
-          // Create popup
-          alert("Example text copied to clipboard!");
-        }
-      </script>
-    </div>
+        // Create popup
+        alert("Example text copied to clipboard!");
+      }
+    </script>
   </body>
 </html>
